@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nojus\\OneDrive\\Documents\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj": {}
+    "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nojus\\OneDrive\\Documents\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj": {
+    "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nojus\\OneDrive\\Documents\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
+        "projectUniqueName": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
         "projectName": "RestaurantSimulator",
-        "projectPath": "C:\\Users\\nojus\\OneDrive\\Documents\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
+        "projectPath": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
         "packagesPath": "C:\\Users\\nojus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nojus\\OneDrive\\Documents\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\obj\\",
+        "outputPath": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nojus\\AppData\\Roaming\\NuGet\\NuGet.Config"

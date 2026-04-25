@@ -22,14 +22,14 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = RestaurantSimulator
-build_property.ProjectDir = C:\Users\nojus\OneDrive\Documents\Restaurant-Meal-Preparation-Simulator\RestaurantSimulator\
+build_property.ProjectDir = C:\Users\nojus\OneDrive\Documents\UniProjects\Restaurant-Meal-Preparation-Simulator\RestaurantSimulator\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/nojus/OneDrive/Documents/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/App.axaml]
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/nojus/OneDrive/Documents/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MainWindow.axaml]
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

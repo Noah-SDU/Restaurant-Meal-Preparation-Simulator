@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4d6oRfWCahM=",
+  "dgSpecHash": "UXdnVVGeeBg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nojus\\OneDrive\\Documents\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
+  "projectFilePath": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nojus\\.nuget\\packages\\avalonia\\12.0.1\\avalonia.12.0.1.nupkg.sha512",
     "C:\\Users\\nojus\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.25547.20250602\\avalonia.angle.windows.natives.2.1.25547.20250602.nupkg.sha512",

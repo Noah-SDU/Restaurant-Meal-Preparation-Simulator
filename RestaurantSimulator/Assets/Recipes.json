@@ -1,0 +1,191 @@
+{
+  "stations": [
+    { "type": "Cutting", "defaultCount": 1 },
+    { "type": "General", "defaultCount": 2 },
+    { "type": "Stove", "defaultCount": 2 },
+    { "type": "Oven", "defaultCount": 2 },
+    { "type": "Grill", "defaultCount": 1 }
+  ],
+  "ingredients": [
+    { "name": "Tomato", "initialStock": 50, "unit": "pcs", "cost": 0.50 },
+    { "name": "Onion", "initialStock": 30, "unit": "pcs", "cost": 0.30 },
+    { "name": "Cheese", "initialStock": 2000, "unit": "grams", "cost": 2.50 },
+    { "name": "Basil", "initialStock": 100, "unit": "leaves", "cost": 0.10 },
+    { "name": "Pasta", "initialStock": 5, "unit": "kg", "cost": 1.50 },
+    { "name": "Chicken Breast", "initialStock": 20, "unit": "pcs", "cost": 3.00 },
+    { "name": "Beef Steak", "initialStock": 15, "unit": "pcs", "cost": 5.00 },
+    { "name": "Mushroom", "initialStock": 1000, "unit": "grams", "cost": 1.20 },
+    { "name": "Garlic", "initialStock": 50, "unit": "cloves", "cost": 0.20 },
+    { "name": "Olive Oil", "initialStock": 2000, "unit": "ml", "cost": 4.00 },
+    { "name": "Butter", "initialStock": 1000, "unit": "grams", "cost": 1.50 },
+    { "name": "Flour", "initialStock": 5, "unit": "kg", "cost": 0.80 },
+    { "name": "Eggs", "initialStock": 60, "unit": "pcs", "cost": 0.25 },
+    { "name": "Milk", "initialStock": 10, "unit": "liters", "cost": 1.20 },
+    { "name": "Salt", "initialStock": 2000, "unit": "grams", "cost": 0.05 },
+    { "name": "Pepper", "initialStock": 1000, "unit": "grams", "cost": 0.10 },
+    { "name": "Sour Cream", "initialStock": 500, "unit": "grams", "cost": 2.00 },
+    { "name": "Seafood Mix", "initialStock": 10, "unit": "kg", "cost": 8.00 },
+    { "name": "Bell Pepper", "initialStock": 20, "unit": "pcs", "cost": 0.75 },
+    { "name": "Rice", "initialStock": 5, "unit": "kg", "cost": 1.00 },
+    { "name": "Broth", "initialStock": 5, "unit": "liters", "cost": 1.50 },
+    { "name": "Lemon", "initialStock": 15, "unit": "pcs", "cost": 0.40 },
+    { "name": "Parsley", "initialStock": 50, "unit": "leaves", "cost": 0.15 },
+    { "name": "Mixed Vegetables", "initialStock": 3, "unit": "kg", "cost": 2.50 },
+    { "name": "Soy Sauce", "initialStock": 1000, "unit": "ml", "cost": 3.00 },
+    { "name": "Lamb", "initialStock": 10, "unit": "kg", "cost": 9.00 },
+    { "name": "Spices", "initialStock": 500, "unit": "grams", "cost": 4.00 },
+    { "name": "Coconut Milk", "initialStock": 5, "unit": "liters", "cost": 2.50 },
+    { "name": "Cilantro", "initialStock": 50, "unit": "leaves", "cost": 0.15 }
+  ],
+  "recipes": [
+    {
+      "name": "Margherita Pizza",
+      "difficulty": "Medium",
+      "salePrice": 12.50,
+      "requiredIngredients": [
+        { "name": "Tomato", "quantity": 3 },
+        { "name": "Cheese", "quantity": 150 },
+        { "name": "Basil", "quantity": 5 },
+        { "name": "Flour", "quantity": 250 }
+      ],
+      "steps": [
+        { "step": "Preheat the oven", "duration": 5, "stationType": "Oven" },
+        { "step": "Prepare the dough", "duration": 15, "stationType": "General" },
+        { "step": "Spread tomato sauce", "duration": 5, "stationType": "General" },
+        { "step": "Add cheese and basil", "duration": 3, "stationType": "General" },
+        { "step": "Bake the pizza", "duration": 15, "stationType": "Oven" }
+      ]
+    },
+    {
+      "name": "Pasta Pomodoro",
+      "difficulty": "Easy",
+      "salePrice": 9.00,
+      "requiredIngredients": [
+        { "name": "Pasta", "quantity": 0.2 },
+        { "name": "Tomato", "quantity": 4 },
+        { "name": "Garlic", "quantity": 2 },
+        { "name": "Olive Oil", "quantity": 30 }
+      ],
+      "steps": [
+        { "step": "Boil water", "duration": 5, "stationType": "Stove" },
+        { "step": "Cook pasta", "duration": 10, "stationType": "Stove" },
+        { "step": "Prepare tomato sauce", "duration": 8, "stationType": "General" },
+        { "step": "Mix pasta and sauce", "duration": 2, "stationType": "Stove" }
+      ]
+    },
+    {
+      "name": "Grilled Chicken with Garlic Butter",
+      "difficulty": "Medium",
+      "salePrice": 14.50,
+      "requiredIngredients": [
+        { "name": "Chicken Breast", "quantity": 1 },
+        { "name": "Garlic", "quantity": 3 },
+        { "name": "Butter", "quantity": 50 }
+      ],
+      "steps": [
+        { "step": "Marinate the chicken", "duration": 30, "stationType": "General" },
+        { "step": "Preheat the grill", "duration": 10, "stationType": "Grill" },
+        { "step": "Grill the chicken", "duration": 20, "stationType": "Grill" },
+        { "step": "Prepare garlic butter sauce", "duration": 5, "stationType": "General" },
+        { "step": "Brush garlic butter on chicken", "duration": 2, "stationType": "General" }
+      ]
+    },
+    {
+      "name": "Beef Stroganoff",
+      "difficulty": "Hard",
+      "salePrice": 18.00,
+      "requiredIngredients": [
+        { "name": "Beef Steak", "quantity": 1 },
+        { "name": "Onion", "quantity": 1 },
+        { "name": "Mushroom", "quantity": 100 },
+        { "name": "Butter", "quantity": 30 },
+        { "name": "Sour Cream", "quantity": 50 }
+      ],
+      "steps": [
+        { "step": "Slice beef into strips", "duration": 10, "stationType": "Cutting" },
+        { "step": "Saute onions and mushrooms", "duration": 5, "stationType": "Stove" },
+        { "step": "Add beef and sear", "duration": 10, "stationType": "Stove" },
+        { "step": "Prepare sauce with sour cream", "duration": 5, "stationType": "General" },
+        { "step": "Simmer for flavors to develop", "duration": 10, "stationType": "Stove" }
+      ]
+    },
+    {
+      "name": "Chocolate Pancakes",
+      "difficulty": "Easy",
+      "salePrice": 8.50,
+      "requiredIngredients": [
+        { "name": "Flour", "quantity": 200 },
+        { "name": "Eggs", "quantity": 2 },
+        { "name": "Milk", "quantity": 0.5 },
+        { "name": "Butter", "quantity": 20 }
+      ],
+      "steps": [
+        { "step": "Mix dry ingredients", "duration": 5, "stationType": "General" },
+        { "step": "Add milk and eggs", "duration": 3, "stationType": "General" },
+        { "step": "Whisk until smooth", "duration": 3, "stationType": "General" },
+        { "step": "Cook pancakes on frying pan", "duration": 10, "stationType": "Stove" },
+        { "step": "Serve with toppings", "duration": 2, "stationType": "General" }
+      ]
+    },
+    {
+      "name": "Seafood Paella",
+      "difficulty": "Hard",
+      "salePrice": 24.00,
+      "requiredIngredients": [
+        { "name": "Seafood Mix", "quantity": 0.5 },
+        { "name": "Onion", "quantity": 1 },
+        { "name": "Bell Pepper", "quantity": 1 },
+        { "name": "Rice", "quantity": 0.3 },
+        { "name": "Broth", "quantity": 0.5 },
+        { "name": "Lemon", "quantity": 1 },
+        { "name": "Parsley", "quantity": 5 }
+      ],
+      "steps": [
+        { "step": "Prepare seafood and chop vegetables", "duration": 10, "stationType": "Cutting" },
+        { "step": "Sauté onions, garlic, and bell peppers", "duration": 5, "stationType": "Stove" },
+        { "step": "Add rice and spices", "duration": 5, "stationType": "General" },
+        { "step": "Pour in broth and simmer", "duration": 20, "stationType": "Stove" },
+        { "step": "Add seafood and cook until done", "duration": 10, "stationType": "Stove" },
+        { "step": "Garnish with lemon and parsley", "duration": 2, "stationType": "General" }
+      ]
+    },
+    {
+      "name": "Vegetable Stir Fry",
+      "difficulty": "Easy",
+      "salePrice": 10.50,
+      "requiredIngredients": [
+        { "name": "Mixed Vegetables", "quantity": 0.4 },
+        { "name": "Olive Oil", "quantity": 20 },
+        { "name": "Soy Sauce", "quantity": 30 }
+      ],
+      "steps": [
+        { "step": "Chop assorted vegetables", "duration": 5, "stationType": "Cutting" },
+        { "step": "Heat wok and add oil", "duration": 2, "stationType": "Stove" },
+        { "step": "Stir-fry vegetables over high heat", "duration": 7, "stationType": "Stove" },
+        { "step": "Add soy sauce and seasonings", "duration": 3, "stationType": "General" },
+        { "step": "Toss and serve immediately", "duration": 1, "stationType": "General" }
+      ]
+    },
+    {
+      "name": "Lamb Curry",
+      "difficulty": "Hard",
+      "salePrice": 22.00,
+      "requiredIngredients": [
+        { "name": "Lamb", "quantity": 0.5 },
+        { "name": "Spices", "quantity": 20 },
+        { "name": "Onion", "quantity": 2 },
+        { "name": "Tomato", "quantity": 3 },
+        { "name": "Coconut Milk", "quantity": 0.4 },
+        { "name": "Cilantro", "quantity": 10 }
+      ],
+      "steps": [
+        { "step": "Marinate lamb with spices", "duration": 20, "stationType": "General" },
+        { "step": "Brown lamb in a pot", "duration": 10, "stationType": "Stove" },
+        { "step": "Grind spices and sauté onions", "duration": 5, "stationType": "Stove" },
+        { "step": "Add lamb, tomatoes, and coconut milk", "duration": 5, "stationType": "General" },
+        { "step": "Simmer until lamb is tender", "duration": 25, "stationType": "Stove" },
+        { "step": "Finish with fresh cilantro", "duration": 2, "stationType": "General" }
+      ]
+    }
+  ]
+}
