@@ -1,4 +1,4 @@
-namespace RestaurontSimulator.Models
+namespace RestaurantSimulator.Models
 {
     public class Ingredients
     {
