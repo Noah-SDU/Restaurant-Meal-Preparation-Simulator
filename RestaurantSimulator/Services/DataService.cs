@@ -1,4 +1,6 @@
 using System.IO;
+using System.Text.Json;
+using RestaurantSimulator.Models;
 
 
 namespace RestaurantSimulator.Services
@@ -14,14 +16,30 @@ namespace RestaurantSimulator.Services
 
         
 
-        public string ReadData()
+        public RestaurantData ReadRestaurantData()
         {
             if (!File.Exists(_filePath))
             {
                 throw new FileNotFoundException($"The file {_filePath} was not found.");
             }
 
-            return File.ReadAllText(_filePath);
+            var json = File.ReadAllText(_filePath);
+
+
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var data = JsonSerializer.Deserialize<RestaurantData>(json, options);
+
+            if (data is null)
+            {
+                throw new InvalidDataException("Failed to deserialize restaurant data from JSON.");
+            }
+
+            return data;
         }
     }
 }
