@@ -20,10 +20,18 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            var mainVm = new MainWindowViewModel();
+            var navigation = new Services.NavigationService(mainVm);
+
+            // Navigate to the initial page using the generic factory method
+            navigation.Navigate<MainMenuViewModel>();
+
+            var mainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = mainVm,
             };
+
+            desktop.MainWindow = mainWindow;
         }
 
         base.OnFrameworkInitializationCompleted();
