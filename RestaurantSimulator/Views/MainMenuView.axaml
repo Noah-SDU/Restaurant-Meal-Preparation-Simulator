@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RestaurantSimulator.ViewModels"
+             x:Class="RestaurantSimulator.Views.MainMenuView"
+             x:DataType="vm:MainMenuViewModel">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainMenuViewModel/>
+    </Design.DataContext>
+
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+    <TextBlock Text="We're Cooked" FontSize="96" FontWeight="Bold" Foreground="#000000" Margin="0,0,0,5"/>
+    <TextBlock Text="An interactive, Avalonia-based restaurant simulator" FontSize="24" Foreground="#000000" HorizontalAlignment="Center"/>
+    <Grid RowDefinitions="Auto,Auto,Auto" Margin="0,50,0,0" Width="200" RowSpacing="15">
+        <Button Grid.Row="0" Content="Get Cooking" FontSize="24" Command="{Binding MainWindowCommand}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="1" Content="Options" FontSize="24" Command="{Binding OptionsCommand}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="2" Content="Quit" FontSize="24" Command="{Binding QuitCommand}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+    </Grid>
+    </StackPanel>
+</UserControl>

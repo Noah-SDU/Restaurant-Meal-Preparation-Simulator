@@ -31,5 +31,14 @@ build_property.EnableCodeStyleSeverity =
 [C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/GameView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MainMenuView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/OptionsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
