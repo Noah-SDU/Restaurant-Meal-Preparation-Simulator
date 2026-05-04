@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RestaurantSimulator.ViewModels"
+             x:Class="RestaurantSimulator.Views.MoneyView"
+             x:DataType="vm:MoneyViewModel">
+
+    <Border Margin="10,10,10,6"
+            Background="#6E4A5D"
+            BorderBrush="#9B7888"
+            BorderThickness="1"
+            CornerRadius="3"
+            Padding="10">
+        <Grid ColumnDefinitions="*,*,*">
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Money" Foreground="#FFFFFF" FontWeight="Bold" FontSize="12"/>
+                <TextBlock Text="{Binding Money, StringFormat='${0:N2}'}" Foreground="#F8F3F5" FontSize="11"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Expenses" Foreground="#FFFFFF" FontWeight="Bold" FontSize="12"/>
+                <TextBlock Text="{Binding Expenses, StringFormat='${0:N2}'}" Foreground="#F8F3F5" FontSize="11"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Earnings" Foreground="#FFFFFF" FontWeight="Bold" FontSize="12"/>
+                <TextBlock Text="{Binding Earnings, StringFormat='${0:N2}'}" Foreground="#F8F3F5" FontSize="11"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+
+</UserControl>

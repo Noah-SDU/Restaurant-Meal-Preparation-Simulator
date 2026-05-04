@@ -1,10 +1,114 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:RestaurantSimulator.ViewModels"
+             xmlns:v="using:RestaurantSimulator.Views"
              x:Class="RestaurantSimulator.Views.GameView"
              x:DataType="vm:GameViewModel">
 
+    <UserControl.Styles>
+        <Style Selector="TextBox.console-input">
+            <Setter Property="Foreground" Value="#F8F3F5"/>
+            <Setter Property="Background" Value="#5B3B4B"/>
+            <Setter Property="BorderBrush" Value="#9B7888"/>
+            <Setter Property="CaretBrush" Value="#FFFFFF"/>
+            <Setter Property="SelectionBrush" Value="#A98396"/>
+        </Style>
+        <Style Selector="TextBox.console-input /template/ Border#border">
+            <Setter Property="Background" Value="#5B3B4B"/>
+            <Setter Property="BorderBrush" Value="#9B7888"/>
+        </Style>
+        <Style Selector="TextBox.console-input /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#5B3B4B"/>
+            <Setter Property="BorderBrush" Value="#9B7888"/>
+        </Style>
+        <Style Selector="TextBox.console-input /template/ TextPresenter#PART_TextPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="TextBox.console-input:pointerover">
+            <Setter Property="Background" Value="#664456"/>
+            <Setter Property="BorderBrush" Value="#B08C9C"/>
+        </Style>
+        <Style Selector="TextBox.console-input:pointerover /template/ Border#border">
+            <Setter Property="Background" Value="#664456"/>
+            <Setter Property="BorderBrush" Value="#B08C9C"/>
+        </Style>
+        <Style Selector="TextBox.console-input:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#664456"/>
+            <Setter Property="BorderBrush" Value="#B08C9C"/>
+        </Style>
+        <Style Selector="TextBox.console-input:pointerover /template/ TextPresenter#PART_TextPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="TextBox.console-input:focus">
+            <Setter Property="Background" Value="#664456"/>
+            <Setter Property="BorderBrush" Value="#C8A9B6"/>
+        </Style>
+        <Style Selector="TextBox.console-input:focus /template/ Border#border">
+            <Setter Property="Background" Value="#664456"/>
+            <Setter Property="BorderBrush" Value="#C8A9B6"/>
+        </Style>
+        <Style Selector="TextBox.console-input:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#664456"/>
+            <Setter Property="BorderBrush" Value="#C8A9B6"/>
+        </Style>
+        <Style Selector="TextBox.console-input:focus /template/ TextPresenter#PART_TextPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </UserControl.Styles>
 
-    <TextBlock Text="Gameplay view placeholder" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    <Grid RowDefinitions="2*,*" Background="#4D3140">
+        <!-- Top: Split view of Money/Tabbed Ingredients+Recipes and Stations -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,2*">
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <v:MoneyView Grid.Row="0" DataContext="{Binding MoneyViewModel}"/>
+                <TabControl Grid.Row="1" Background="#5C3A4B" BorderBrush="#9B7888">
+                    <TabItem Header="Ingredients">
+                        <v:IngredientsView DataContext="{Binding IngredientsViewModel}"/>
+                    </TabItem>
+                    <TabItem Header="Recipes">
+                        <v:RecipeView DataContext="{Binding RecipeViewModel}"/>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <v:StationsView Grid.Column="1" DataContext="{Binding StationsViewModel}"/>
+        </Grid>
+
+        <!-- Bottom: Console -->
+        <Grid Grid.Row="1" RowDefinitions="*,Auto" Background="#5C3A4B">
+            <!-- Console Output -->
+            <Border Grid.Row="0" Margin="10,10,10,6" Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2">
+                <TextBlock Text="{Binding ConsoleOutput}"
+                           Margin="8"
+                           VerticalAlignment="Stretch"
+                           TextWrapping="Wrap"
+                           FontFamily="Courier New"
+                           FontSize="12"
+                           Foreground="#F8F3F5"/>
+            </Border>
+
+            <!-- Command Input -->
+            <TextBox Grid.Row="1"
+                     Classes="console-input"
+                     Text="{Binding CommandInput}"
+                     PlaceholderText="Enter command (type 'help' for commands)..."
+                     PlaceholderForeground="#C8A9B6"
+                     FontFamily="Courier New"
+                     FontSize="12"
+                     BorderThickness="1"
+                     Padding="10,8"
+                     Margin="10,0,10,10"
+                     VerticalContentAlignment="Center">
+                <TextBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBackground" Color="#5B3B4B"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#664456"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#664456"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrush" Color="#9B7888"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#B08C9C"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#C8A9B6"/>
+                    <SolidColorBrush x:Key="TextControlForeground" Color="#F8F3F5"/>
+                </TextBox.Resources>
+            </TextBox>
+        </Grid>
+    </Grid>
 
 </UserControl>
