@@ -15,6 +15,7 @@ namespace RestaurantSimulator.Models
     {
         public required string Name { get; set; }
         public required double Quantity { get; set; }
+        public string Unit { get; set; } = "";
     }
 
     public class Steps

@@ -8,30 +8,56 @@
         <Grid Margin="10" RowDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Text="Stations" FontSize="14" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,10"/>
             <ScrollViewer Grid.Row="1"
-                          VerticalScrollBarVisibility="Visible"
-                          HorizontalScrollBarVisibility="Disabled">
+                          VerticalScrollBarVisibility="Disabled"
+                          HorizontalScrollBarVisibility="Visible">
                 <ItemsControl ItemsSource="{Binding Stations}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="vm:StationDisplayViewModel">
-                            <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" Margin="0,0,0,8" Padding="10" CornerRadius="3">
+                            <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" Margin="0,0,8,0" Padding="8" CornerRadius="3" Width="205">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Type}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="12"/>
-                                    <TextBlock Text="{Binding DefaultCount, StringFormat='Capasity: {0}'}" Foreground="#F8F3F5" FontSize="11" Margin="0,2,0,0"/>
-                                    <TextBlock Text="Contents:" Foreground="#F8F3F5" FontSize="11" Margin="0,6,0,2"/>
-                                    <ItemsControl ItemsSource="{Binding MovedIngredients}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="vm:StationIngredientViewModel">
-                                                <TextBlock Foreground="#F8F3F5" FontSize="10" Margin="0,1,0,0">
-                                                    <Run Text="- "/>
-                                                    <Run Text="{Binding Name}"/>
-                                                    <Run Text=": "/>
-                                                    <Run Text="{Binding Amount}"/>
-                                                    <Run Text=" "/>
-                                                    <Run Text="{Binding Unit}"/>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="{Binding Type}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="11"/>
+                                        <TextBlock Text="{Binding SlotCount, StringFormat='[{0} slots]'}" FontSize="9" Foreground="#D4B5C0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel IsVisible="{Binding HasActiveSteps}">
+                                        <TextBlock Text="Working Steps:" Foreground="#F8F3F5" FontSize="10" Margin="0,5,0,2"/>
+                                        <ItemsControl ItemsSource="{Binding ActiveSteps}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#5B3B4B" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Margin="0,2,0,2" Padding="4">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Name}" Foreground="#F8F3F5" FontSize="9" TextWrapping="Wrap"/>
+                                                            <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,2,0,0">
+                                                                <TextBlock Text="{Binding RemainingSeconds, StringFormat='Time: {0} sec'}" Foreground="#FFB6C1" FontSize="8" VerticalAlignment="Center"/>
+                                                                <Button Content="SPEED UP"
+                                                                    Command="{Binding $parent[ItemsControl].DataContext.ReduceTimeCommand}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Background="#8B5A8C"
+                                                                        Foreground="#FFFFFF"
+                                                                        FontSize="8"
+                                                                        Padding="4,2"
+                                                                        BorderThickness="1"
+                                                                        BorderBrush="#9B7888"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+
+                                    <TextBlock IsVisible="{Binding HasNoActiveSteps}"
+                                               Text="No active steps"
+                                               Foreground="#B08C9C"
+                                               FontSize="9"
+                                               Margin="0,5,0,0"
+                                               FontStyle="Italic"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
