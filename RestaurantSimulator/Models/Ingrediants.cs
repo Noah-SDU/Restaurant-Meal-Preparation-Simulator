@@ -6,5 +6,6 @@ namespace RestaurantSimulator.Models
         public required int InitialStock { get; set; }
         public required string Unit { get; set; }
         public required double Cost { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 }

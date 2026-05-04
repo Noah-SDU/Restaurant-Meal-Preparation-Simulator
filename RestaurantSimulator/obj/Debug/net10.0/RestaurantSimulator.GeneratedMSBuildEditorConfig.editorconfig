@@ -34,11 +34,23 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/GameView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/IngredientsView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MainMenuView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/MoneyView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/OptionsView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/RecipeView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/nojus/OneDrive/Documents/UniProjects/Restaurant-Meal-Preparation-Simulator/RestaurantSimulator/Views/StationsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

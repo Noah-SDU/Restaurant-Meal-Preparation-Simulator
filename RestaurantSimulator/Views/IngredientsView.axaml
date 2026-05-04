@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RestaurantSimulator.ViewModels"
+             xmlns:m="using:RestaurantSimulator.Models"
+             x:Class="RestaurantSimulator.Views.IngredientsView"
+             x:DataType="vm:IngredientsViewModel">
+
+    <Border Background="#5C3A4B" BorderBrush="#9B7888" BorderThickness="0,0,1,0">
+        <Grid Margin="10" RowDefinitions="Auto,*">
+            <TextBlock Grid.Row="0" Text="Ingredients" FontSize="14" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,10"/>
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Visible"
+                          HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding Ingredients}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="m:Ingredients">
+                            <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" Margin="0,0,0,8" Padding="10" CornerRadius="3">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="12"/>
+                                    <TextBlock Foreground="#F8F3F5" FontSize="11" Margin="0,2,0,0">
+                                        <Run Text="Stock: "/>
+                                        <Run Text="{Binding InitialStock}"/>
+                                        <Run Text="{Binding Unit}"/>
+                                    </TextBlock>
+                                        <TextBlock Text="{Binding Status}" Foreground="#C8A9B6" FontSize="10" Margin="0,2,0,0"/>
+                                    <TextBlock Text="{Binding Cost, StringFormat='Cost: {0:C2}'}" Foreground="#F8F3F5" FontSize="11" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+
+</UserControl>
