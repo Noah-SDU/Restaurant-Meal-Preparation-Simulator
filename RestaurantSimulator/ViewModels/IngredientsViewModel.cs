@@ -20,7 +20,7 @@ public class IngredientsViewModel : ViewModelBase
         Ingredients = new ObservableCollection<Ingredients>(ingredients);
     }
 
-    public bool TryMoveIngredient(string ingredientName, int amount, out string message, out string unit)
+    public bool TryMoveIngredient(string ingredientName, double amount, out string message, out string unit)
     {
         unit = string.Empty;
 
@@ -48,7 +48,7 @@ public class IngredientsViewModel : ViewModelBase
         return true;
     }
 
-    public bool TryBuyIngredient(string ingredientName, int amount, out string message, out decimal totalCost, out string unit)
+    public bool TryBuyIngredient(string ingredientName, double amount, out string message, out decimal totalCost, out string unit)
     {
         totalCost = 0m;
         unit = string.Empty;
@@ -70,8 +70,35 @@ public class IngredientsViewModel : ViewModelBase
 
         ingredient.InitialStock += amount;
         unit = ingredient.Unit;
-        totalCost = amount * (decimal)ingredient.Cost;
+        totalCost = (decimal)amount * (decimal)ingredient.Cost;
         message = $"Bought {amount} {unit} of {ingredient.Name} for {totalCost:C2}";
+
+        Ingredients = new ObservableCollection<Ingredients>(Ingredients);
+        return true;
+    }
+
+    public bool TryAddIngredient(string ingredientName, double amount, out string message, out string unit)
+    {
+        unit = string.Empty;
+
+        var ingredient = Ingredients.FirstOrDefault(i =>
+            i.Name.Equals(ingredientName, System.StringComparison.OrdinalIgnoreCase));
+
+        if (ingredient == null)
+        {
+            message = $"Ingredient '{ingredientName}' not found.";
+            return false;
+        }
+
+        if (amount <= 0)
+        {
+            message = "Amount must be a positive number.";
+            return false;
+        }
+
+        ingredient.InitialStock += amount;
+        unit = ingredient.Unit;
+        message = $"Added {amount} {unit} of {ingredient.Name}";
 
         Ingredients = new ObservableCollection<Ingredients>(Ingredients);
         return true;

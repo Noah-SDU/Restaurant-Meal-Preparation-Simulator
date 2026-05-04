@@ -1,6 +1,11 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using RestaurantSimulator.Models;
 
 namespace RestaurantSimulator.ViewModels;
@@ -8,6 +13,7 @@ namespace RestaurantSimulator.ViewModels;
 public class StationsViewModel : ViewModelBase
 {
     private ObservableCollection<StationDisplayViewModel> _stations = new();
+    private OrdersViewModel? _ordersViewModel;
 
     public ObservableCollection<StationDisplayViewModel> Stations
     {
@@ -15,14 +21,25 @@ public class StationsViewModel : ViewModelBase
         set => SetProperty(ref _stations, value);
     }
 
-    public StationsViewModel(IEnumerable<Stations> stations)
+    public StationsViewModel(IEnumerable<Stations> stations, OrdersViewModel? ordersViewModel = null)
     {
+        _ordersViewModel = ordersViewModel;
         Stations = new ObservableCollection<StationDisplayViewModel>(
             stations.Select(s => new StationDisplayViewModel
             {
                 Type = s.Type,
-                DefaultCount = s.DefaultCount
+                SlotCount = s.DefaultCount,
+                OrdersViewModel = _ordersViewModel
             }));
+    }
+
+    public void SetOrdersViewModel(OrdersViewModel ordersViewModel)
+    {
+        _ordersViewModel = ordersViewModel;
+        foreach (var station in Stations)
+        {
+            station.OrdersViewModel = ordersViewModel;
+        }
     }
 
     public bool ContainsStation(string stationType)
@@ -30,7 +47,7 @@ public class StationsViewModel : ViewModelBase
         return Stations.Any(s => s.Type.Equals(stationType, System.StringComparison.OrdinalIgnoreCase));
     }
 
-    public bool TryRecordIngredientMove(string stationType, string ingredientName, int amount, string unit, out string message)
+    public bool TryStartStep(string stepName, string stationType, out string message)
     {
         var station = Stations.FirstOrDefault(s =>
             s.Type.Equals(stationType, System.StringComparison.OrdinalIgnoreCase));
@@ -41,23 +58,23 @@ public class StationsViewModel : ViewModelBase
             return false;
         }
 
-        if (!station.CanAccept(ingredientName))
+        if (_ordersViewModel == null)
         {
-            message = $"Station '{station.Type}' is at capacity for ingredient types. DefaultCount: {station.DefaultCount}, Types used: {station.DistinctIngredientTypes}";
+            message = "No orders view is connected.";
             return false;
         }
 
-        station.AddOrUpdateIngredient(ingredientName, amount, unit);
-        message = $"Added {amount} {unit} of {ingredientName} to {station.Type}";
-        return true;
+        return station.TryStartStep(stepName, _ordersViewModel, out message);
     }
 }
 
 public class StationDisplayViewModel : ViewModelBase
 {
     private string _type = string.Empty;
-    private int _capacity;
-    private ObservableCollection<StationIngredientViewModel> _movedIngredients = new();
+    private int _slotCount = 0;
+    private OrdersViewModel? _ordersViewModel;
+    private ObservableCollection<OrderStepViewModel> _activeSteps = new();
+    private Dictionary<OrderStepViewModel, CancellationTokenSource> _stepCancellationTokens = new();
 
     public string Type
     {
@@ -65,67 +82,129 @@ public class StationDisplayViewModel : ViewModelBase
         set => SetProperty(ref _type, value);
     }
 
-    public int DefaultCount
+    public int SlotCount
     {
-        get => _capacity;
-        set => SetProperty(ref _capacity, value);
+        get => _slotCount;
+        set => SetProperty(ref _slotCount, value);
     }
 
-    public int DistinctIngredientTypes => MovedIngredients.Count;
-
-    public bool CanAccept(string ingredientName)
+    public OrdersViewModel? OrdersViewModel
     {
-        return MovedIngredients.Any(i => i.Name.Equals(ingredientName, System.StringComparison.OrdinalIgnoreCase))
-            || DistinctIngredientTypes < DefaultCount;
-    }
-
-    public ObservableCollection<StationIngredientViewModel> MovedIngredients
-    {
-        get => _movedIngredients;
-        set => SetProperty(ref _movedIngredients, value);
-    }
-
-    public void AddOrUpdateIngredient(string ingredientName, int amount, string unit)
-    {
-        var existing = MovedIngredients.FirstOrDefault(i =>
-            i.Name.Equals(ingredientName, System.StringComparison.OrdinalIgnoreCase));
-
-        if (existing != null)
+        get => _ordersViewModel;
+        set
         {
-            existing.Amount += amount;
-            return;
+            SetProperty(ref _ordersViewModel, value);
+        }
+    }
+
+    public ObservableCollection<OrderStepViewModel> ActiveSteps
+    {
+        get => _activeSteps;
+        set
+        {
+            if (SetProperty(ref _activeSteps, value))
+            {
+                OnPropertyChanged(nameof(HasActiveSteps));
+                OnPropertyChanged(nameof(HasNoActiveSteps));
+            }
+        }
+    }
+
+    public bool HasActiveSteps => _activeSteps.Count > 0;
+
+    public bool HasNoActiveSteps => !HasActiveSteps;
+
+    public bool IsBusy => HasActiveSteps;
+
+    public ICommand ReduceTimeCommand { get; }
+
+    public StationDisplayViewModel()
+    {
+        _activeSteps.CollectionChanged += (_, _) =>
+        {
+            OnPropertyChanged(nameof(HasActiveSteps));
+            OnPropertyChanged(nameof(HasNoActiveSteps));
+            OnPropertyChanged(nameof(IsBusy));
+        };
+
+        ReduceTimeCommand = new RelayCommand<OrderStepViewModel?>(ReduceStepTimeForStep);
+    }
+
+    public bool TryStartStep(string stepName, OrdersViewModel ordersViewModel, out string message)
+    {
+        if (_activeSteps.Count >= SlotCount)
+        {
+            message = $"Station '{Type}' is at full capacity ({SlotCount} slots).";
+            return false;
         }
 
-        MovedIngredients.Add(new StationIngredientViewModel
+        if (!ordersViewModel.TryStartStep(stepName, Type, out var orderStep, out message) || orderStep == null)
         {
-            Name = ingredientName,
-            Amount = amount,
-            Unit = unit
-        });
-    }
-}
+            return false;
+        }
 
-public class StationIngredientViewModel : ViewModelBase
-{
-    private string _name = string.Empty;
-    private int _amount;
-    private string _unit = string.Empty;
-
-    public string Name
-    {
-        get => _name;
-        set => SetProperty(ref _name, value);
+        StartTimer(orderStep, ordersViewModel);
+        message = $"Started '{orderStep.Name}' at {Type}.";
+        return true;
     }
 
-    public int Amount
+    private void StartTimer(OrderStepViewModel orderStep, OrdersViewModel ordersViewModel)
     {
-        get => _amount;
-        set => SetProperty(ref _amount, value);
+        _activeSteps.Add(orderStep);
+        orderStep.TickRemainingSeconds(orderStep.Duration * 60);
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        _stepCancellationTokens[orderStep] = cancellationTokenSource;
+        _ = RunStepTimerAsync(orderStep, ordersViewModel, cancellationTokenSource.Token);
     }
 
-    public string Unit
+    private async Task RunStepTimerAsync(OrderStepViewModel orderStep, OrdersViewModel ordersViewModel, CancellationToken cancellationToken)
     {
-        get => _unit;
-        set => SetProperty(ref _unit, value);
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested && orderStep.RemainingSeconds > 0)
+            {
+                await Task.Delay(1000, cancellationToken);
+                orderStep.TickRemainingSeconds(orderStep.RemainingSeconds - 1);
+            }
+
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                CompleteActiveStep(orderStep, ordersViewModel);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Task was cancelled, normal shutdown
+        }
+    }
+
+    private void CompleteActiveStep(OrderStepViewModel orderStep, OrdersViewModel ordersViewModel)
+    {
+        if (_stepCancellationTokens.TryGetValue(orderStep, out var cancellationTokenSource))
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            _stepCancellationTokens.Remove(orderStep);
+        }
+
+        _activeSteps.Remove(orderStep);
+        ordersViewModel.CompleteStep(orderStep);
+    }
+
+    private void ReduceStepTimeForStep(OrderStepViewModel? step)
+    {
+        if (step == null || !_activeSteps.Contains(step))
+            return;
+
+        if (step.RemainingSeconds <= 0)
+            return;
+
+        step.TickRemainingSeconds(Math.Max(0, step.RemainingSeconds - 10));
+
+        if (step.RemainingSeconds == 0 && _ordersViewModel != null)
+        {
+            CompleteActiveStep(step, _ordersViewModel);
+        }
     }
 }

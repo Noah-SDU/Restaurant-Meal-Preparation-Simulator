@@ -7,8 +7,7 @@
 
     <Border Background="#5C3A4B" BorderBrush="#9B7888" BorderThickness="0,0,1,0">
         <Grid Margin="10" RowDefinitions="Auto,*">
-            <TextBlock Grid.Row="0" Text="Ingredients" FontSize="14" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,10"/>
-            <ScrollViewer Grid.Row="1"
+            <ScrollViewer Grid.Row="0"
                           VerticalScrollBarVisibility="Visible"
                           HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding Ingredients}">

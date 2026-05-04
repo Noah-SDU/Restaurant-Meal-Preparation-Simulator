@@ -4,7 +4,24 @@
              x:Class="RestaurantSimulator.Views.OptionsView"
              x:DataType="vm:OptionsViewModel">
 
-
-    <TextBlock Text="Options view placeholder" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    <Border Background="#5C3A4B" BorderBrush="#9B7888" BorderThickness="0">
+        <StackPanel Spacing="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40">
+            <TextBlock Text="Options" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" TextAlignment="Center"/>
+            
+            <TextBlock Text="(Options coming soon)" FontSize="14" Foreground="#D4B5C0" TextAlignment="Center"/>
+            
+            <Button Content="Return to Main Menu" 
+                    Command="{Binding ReturnToMenuCommand}"
+                    Background="#8B5A8C" 
+                    Foreground="#FFFFFF" 
+                    FontSize="12" 
+                    Padding="15,10" 
+                    BorderThickness="1" 
+                    BorderBrush="#9B7888"
+                    CornerRadius="3"
+                    MaxWidth="200"
+                    HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
 
 </UserControl>

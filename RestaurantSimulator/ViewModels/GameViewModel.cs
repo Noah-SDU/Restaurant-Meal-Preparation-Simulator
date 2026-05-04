@@ -3,18 +3,20 @@ using System.Windows.Input;
 using Avalonia.Controls;
 using RestaurantSimulator.Models;
 using RestaurantSimulator.Services;
+using CommunityToolkit.Mvvm.Input;
 
 namespace RestaurantSimulator.ViewModels;
 
-public partial class GameViewModel : ViewModelBase
+public partial class GameViewModel : ViewModelBase, IDisposable
 {
     private readonly CommandService _commandService;
+    private readonly INavigationService? _navigationService;
     private string _commandInput = string.Empty;
     private string _consoleOutput = "> Welcome to the Restaurant Meal Preparation Simulator!\n> Type 'help' for available commands.\n";
     private IngredientsViewModel _ingredientsViewModel;
     private StationsViewModel _stationsViewModel;
     private MoneyViewModel _moneyViewModel;
-    private RecipeViewModel _recipeViewModel;
+    private OrdersViewModel _ordersViewModel;
 
     public string CommandInput
     {
@@ -46,23 +48,35 @@ public partial class GameViewModel : ViewModelBase
         set => SetProperty(ref _moneyViewModel, value);
     }
 
-    public RecipeViewModel RecipeViewModel
+    public OrdersViewModel OrdersViewModel
     {
-        get => _recipeViewModel;
-        set => SetProperty(ref _recipeViewModel, value);
+        get => _ordersViewModel;
+        set => SetProperty(ref _ordersViewModel, value);
     }
 
     public ICommand ExecuteCommandCommand { get; }
+    public ICommand ReturnToMenuCommand { get; }
 
-    public GameViewModel()
+    public GameViewModel(INavigationService? navigationService = null)
     {
+        _navigationService = navigationService;
         var data = LoadRestaurantData();
         _ingredientsViewModel = new IngredientsViewModel(data.Ingredients);
-        _stationsViewModel = new StationsViewModel(data.Stations);
         _moneyViewModel = new MoneyViewModel();
-        _recipeViewModel = new RecipeViewModel(data.Recipes);
-        _commandService = new CommandService(_ingredientsViewModel, _stationsViewModel, _moneyViewModel);
+        _ordersViewModel = new OrdersViewModel(data.Recipes, data.Ingredients, _moneyViewModel);
+        _stationsViewModel = new StationsViewModel(data.Stations, _ordersViewModel);
+        _commandService = new CommandService(_ingredientsViewModel, _stationsViewModel, _moneyViewModel, _ordersViewModel);
         ExecuteCommandCommand = new RelayCommand(_ => ExecuteCommand());
+        ReturnToMenuCommand = new RelayCommand(_ => ReturnToMenu());
+    }
+
+    private void ReturnToMenu()
+    {
+        if (_navigationService != null)
+        {
+            _navigationService.Navigate<MainMenuViewModel>();
+        }
+        Dispose();
     }
 
     private RestaurantData LoadRestaurantData()
@@ -108,24 +122,9 @@ public partial class GameViewModel : ViewModelBase
         // Clear input
         CommandInput = string.Empty;
     }
-}
 
-public class RelayCommand : ICommand
-{
-    private readonly Action<object?> _execute;
-    private readonly Predicate<object?>? _canExecute;
-
-#pragma warning disable CS0067
-    public event EventHandler? CanExecuteChanged;
-#pragma warning restore CS0067
-
-    public RelayCommand(Action<object?> execute, Predicate<object?>? canExecute = null)
+    public void Dispose()
     {
-        _execute = execute;
-        _canExecute = canExecute;
+        _ordersViewModel?.Dispose();
     }
-
-    public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
-
-    public void Execute(object? parameter) => _execute(parameter);
 }

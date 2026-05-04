@@ -56,34 +56,47 @@
         </Style>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="2*,*" Background="#4D3140">
-        <!-- Top: Split view of Money/Tabbed Ingredients+Recipes and Stations -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,2*">
+    <Grid RowDefinitions="3*,*" Background="#4D3140">
+        <!-- Top: Split view of Money/Ingredients and Orders+Stations -->
+        <Grid Grid.Row="0" ColumnDefinitions="1.05*,1.95*">
             <Grid Grid.Column="0" RowDefinitions="Auto,*">
                 <v:MoneyView Grid.Row="0" DataContext="{Binding MoneyViewModel}"/>
-                <TabControl Grid.Row="1" Background="#5C3A4B" BorderBrush="#9B7888">
-                    <TabItem Header="Ingredients">
-                        <v:IngredientsView DataContext="{Binding IngredientsViewModel}"/>
-                    </TabItem>
-                    <TabItem Header="Recipes">
-                        <v:RecipeView DataContext="{Binding RecipeViewModel}"/>
-                    </TabItem>
-                </TabControl>
+                <Border Grid.Row="1" Background="#5C3A4B" BorderBrush="#9B7888" BorderThickness="1" Margin="10" CornerRadius="3">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Grid.Row="0" Text="Ingredients" FontSize="14" FontWeight="Bold" Foreground="#FFFFFF" Margin="10,10,10,0"/>
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Margin="10,10,10,10">
+                            <v:IngredientsView DataContext="{Binding IngredientsViewModel}"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
             </Grid>
-            <v:StationsView Grid.Column="1" DataContext="{Binding StationsViewModel}"/>
+            <Grid Grid.Column="1" RowDefinitions="Auto,*">
+                <v:OrdersView Grid.Row="0" DataContext="{Binding OrdersViewModel}"/>
+                <v:StationsView Grid.Row="1" DataContext="{Binding StationsViewModel}"/>
+            </Grid>
         </Grid>
 
         <!-- Bottom: Console -->
-        <Grid Grid.Row="1" RowDefinitions="*,Auto" Background="#5C3A4B">
+        <Grid Grid.Row="1" RowDefinitions="*,Auto,Auto" Background="#5C3A4B">
             <!-- Console Output -->
             <Border Grid.Row="0" Margin="10,10,10,6" Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2">
-                <TextBlock Text="{Binding ConsoleOutput}"
-                           Margin="8"
-                           VerticalAlignment="Stretch"
-                           TextWrapping="Wrap"
-                           FontFamily="Courier New"
-                           FontSize="12"
-                           Foreground="#F8F3F5"/>
+                <TextBox Text="{Binding ConsoleOutput}"
+                         IsReadOnly="True"
+                         Margin="8"
+                         TextWrapping="Wrap"
+                         FontFamily="Courier New"
+                         FontSize="12"
+                         Foreground="#F8F3F5"
+                         Background="Transparent"
+                         BorderThickness="0">
+                    <TextBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBackground" Color="Transparent"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                        <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent"/>
+                        <SolidColorBrush x:Key="TextControlForeground" Color="#F8F3F5"/>
+                    </TextBox.Resources>
+                </TextBox>
             </Border>
 
             <!-- Command Input -->
@@ -96,7 +109,7 @@
                      FontSize="12"
                      BorderThickness="1"
                      Padding="10,8"
-                     Margin="10,0,10,10"
+                     Margin="10,0,10,6"
                      VerticalContentAlignment="Center">
                 <TextBox.Resources>
                     <SolidColorBrush x:Key="TextControlBackground" Color="#5B3B4B"/>
@@ -108,6 +121,19 @@
                     <SolidColorBrush x:Key="TextControlForeground" Color="#F8F3F5"/>
                 </TextBox.Resources>
             </TextBox>
+
+            <!-- Return to Menu Button -->
+            <Button Grid.Row="2" 
+                    Content="Return to Main Menu" 
+                    Command="{Binding ReturnToMenuCommand}"
+                    Background="#8B5A8C" 
+                    Foreground="#FFFFFF" 
+                    FontSize="11" 
+                    Padding="10,8" 
+                    Margin="10,0,10,10" 
+                    BorderThickness="1" 
+                    BorderBrush="#9B7888"
+                    CornerRadius="2"/>
         </Grid>
     </Grid>
 

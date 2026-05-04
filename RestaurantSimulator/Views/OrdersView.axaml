@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RestaurantSimulator.ViewModels"
+             xmlns:m="using:RestaurantSimulator.Models"
+             x:Class="RestaurantSimulator.Views.OrdersView"
+             x:DataType="vm:OrdersViewModel">
+
+    <Border Background="#5C3A4B" BorderBrush="#9B7888" BorderThickness="1" Margin="8" CornerRadius="3">
+        <Grid Margin="8" RowDefinitions="Auto,Auto,*">
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Current Order" FontSize="13" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,8"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                    <TextBlock Text="Next Order In:" FontSize="10" Foreground="#D4B5C0" TextAlignment="Right"/>
+                    <TextBlock FontSize="11" FontWeight="Bold" Foreground="#FFB6C1" TextAlignment="Right">
+                        <Run Text="{Binding RemainingSeconds}"/>
+                        <Run Text=" sec"/>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+            
+            <Border Grid.Row="1" Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Margin="0,0,0,6" Padding="5,1">
+                <ProgressBar Value="{Binding RemainingSeconds}" Maximum="180" Background="#7A5A69" Foreground="#FFB6C1" Height="5"/>
+            </Border>
+            
+            <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Border Grid.Column="0" Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Padding="8">
+                    <StackPanel>
+                        <TextBlock Text="Ingredient Progress" Foreground="#F8F3F5" FontSize="10" FontWeight="Bold" Margin="0,0,0,4"/>
+                        <ItemsControl ItemsSource="{Binding IngredientProgress}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:IngredientProgressViewModel">
+                                    <StackPanel Margin="0,2,0,2">
+                                        <TextBlock Foreground="#F8F3F5" FontSize="9" TextWrapping="Wrap">
+                                            <Run Text="{Binding Name}"/>
+                                            <Run Text=": "/>
+                                            <Run Text="{Binding AddedQuantity}"/>
+                                            <Run Text="/"/>
+                                            <Run Text="{Binding RequiredQuantity}"/>
+                                            <Run Text=" "/>
+                                            <Run Text="{Binding Unit}"/>
+                                        </TextBlock>
+                                        <ProgressBar Value="{Binding AddedQuantity}" Maximum="{Binding RequiredQuantity}" Height="4" Background="#5B3B4B" Foreground="#FFB6C1" Margin="0,1,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Column="1" Spacing="8">
+                    <ContentControl Content="{Binding CurrentOrder}">
+                        <ContentControl.ContentTemplate>
+                            <DataTemplate DataType="m:Recipes">
+                                <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Padding="8">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="13"/>
+                                        <TextBlock Text="{Binding Difficulty, StringFormat='Difficulty: {0}'}" Foreground="#F8F3F5" FontSize="10" Margin="0,3,0,0"/>
+                                        <TextBlock Text="{Binding SalePrice, StringFormat='Sale Price: {0:C2}'}" Foreground="#F8F3F5" FontSize="10" Margin="0,1,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ContentControl.ContentTemplate>
+                    </ContentControl>
+
+                    <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Padding="8">
+                        <StackPanel>
+                            <TextBlock Text="Preparation Steps" Foreground="#F8F3F5" FontSize="10" FontWeight="Bold" Margin="0,0,0,4"/>
+                            <ItemsControl ItemsSource="{Binding CurrentOrderSteps}">
+                            <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Margin="0,0,0,4" Padding="6">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding BackgroundColor}"/>
+                                            </Border.Background>
+                                            <StackPanel>
+                                                <TextBlock Foreground="#FFFFFF" FontSize="9" FontWeight="Bold" TextWrapping="Wrap">
+                                                    <Run Text="{Binding Name}"/>
+                                                    <Run Text=" - "/>
+                                                    <Run Text="{Binding Status}"/>
+                                                </TextBlock>
+                                                <TextBlock Foreground="#D4B5C0" FontSize="9" Margin="0,1,0,0" TextWrapping="Wrap">
+                                                    <Run Text="{Binding StationType}"/>
+                                                    <Run Text=" | "/>
+                                                    <Run Text="{Binding Duration}"/>
+                                                    <Run Text=" min"/>
+                                                </TextBlock>
+                                                <TextBlock IsVisible="{Binding IsInProgress}" Foreground="#FFB6C1" FontSize="9" Margin="0,1,0,0" TextWrapping="Wrap">
+                                                    <Run Text="Left: "/>
+                                                    <Run Text="{Binding RemainingSeconds}"/>
+                                                    <Run Text=" sec at "/>
+                                                    <Run Text="{Binding StationName}"/>
+                                                </TextBlock>
+                                                <TextBlock IsVisible="{Binding IsCompleted}" Foreground="#9BE29B" FontSize="9" Text="Completed"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
