@@ -7,10 +7,12 @@ namespace RestaurantSimulator.Services;
 public class NavigationService : INavigationService
 {
     private readonly MainWindowViewModel _host;
+    private readonly Func<Type, ViewModelBase> _viewModelFactory;
     public event PropertyChangedEventHandler? PropertyChanged;
-    public NavigationService(MainWindowViewModel host)
+    public NavigationService(MainWindowViewModel host, Func<Type, ViewModelBase> viewModelFactory)
     {
         _host = host;
+        _viewModelFactory = viewModelFactory;
     }
     public ViewModelBase? CurrentViewModel => _host.CurrentViewModel;
 
@@ -23,25 +25,7 @@ public class NavigationService : INavigationService
 
     public void Navigate<TViewModel>() where TViewModel : ViewModelBase
     {
-        object? instance;
-
-        var navigationConstructor = typeof(TViewModel).GetConstructor(new[] { typeof(INavigationService) });
-        if (navigationConstructor != null)
-        {
-            instance = navigationConstructor.Invoke(new object[] { this });
-        }
-        else
-        {
-            var parameterlessConstructor = typeof(TViewModel).GetConstructor(Type.EmptyTypes);
-            if (parameterlessConstructor == null)
-            {
-                throw new InvalidOperationException(
-                    $"Cannot navigate to {typeof(TViewModel).Name}: no usable constructor found.");
-            }
-
-            instance = parameterlessConstructor.Invoke(Array.Empty<object>());
-        }
-
-        Navigate((TViewModel)instance!);
+        var vm = (TViewModel)_viewModelFactory(typeof(TViewModel));
+        Navigate(vm);
     }
 }

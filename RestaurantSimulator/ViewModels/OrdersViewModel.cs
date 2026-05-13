@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using RestaurantSimulator.Models;
+using RestaurantSimulator.Services;
 
 namespace RestaurantSimulator.ViewModels;
 
@@ -33,14 +34,14 @@ public class IngredientProgressViewModel : ViewModelBase
 
 public class OrderStepViewModel : ViewModelBase
 {
-    private readonly Steps _step;
+    private readonly Step _step;
     private OrderStepStatus _status = OrderStepStatus.Pending;
     private string _stationName = string.Empty;
     private int _remainingSeconds;
 
-    public Steps Step => _step;
+    public Step Step => _step;
 
-    public string Name => _step.Step;
+    public string Name => _step.Name;
 
     public string StationType => _step.StationType;
 
@@ -77,7 +78,7 @@ public class OrderStepViewModel : ViewModelBase
 
     public string BackgroundColor => IsCompleted ? "#FF69B4" : "#5B3B4B";
 
-    public OrderStepViewModel(Steps step)
+    public OrderStepViewModel(Step step)
     {
         _step = step;
     }
@@ -101,12 +102,12 @@ public class OrderStepViewModel : ViewModelBase
     }
 }
 
-public class OrdersViewModel : ViewModelBase
+public class OrdersViewModel : ViewModelBase, IOrderActions, IDisposable
 {
-    private readonly List<Recipes> _availableRecipes;
+    private readonly List<Recipe> _availableRecipes;
     private readonly Dictionary<string, string> _ingredientUnits;
     private readonly MoneyViewModel? _moneyViewModel;
-    private Recipes? _currentOrder;
+    private Recipe? _currentOrder;
     private int _remainingSeconds = 0;
     private CancellationTokenSource? _cancellationTokenSource;
     private Random _random = new();
@@ -114,7 +115,7 @@ public class OrdersViewModel : ViewModelBase
     private ObservableCollection<OrderStepViewModel> _currentOrderSteps = new();
     private ObservableCollection<IngredientProgressViewModel> _ingredientProgress = new();
 
-    public Recipes? CurrentOrder
+    public Recipe? CurrentOrder
     {
         get => _currentOrder;
         set
@@ -145,10 +146,10 @@ public class OrdersViewModel : ViewModelBase
         set => SetProperty(ref _ingredientProgress, value);
     }
 
-    public OrdersViewModel(IEnumerable<Recipes> recipes, IEnumerable<Ingredients>? ingredients = null, MoneyViewModel? moneyViewModel = null)
+    public OrdersViewModel(IEnumerable<Recipe> recipes, IEnumerable<IngredientDefinition>? ingredients = null, MoneyViewModel? moneyViewModel = null)
     {
         _moneyViewModel = moneyViewModel;
-        _availableRecipes = new List<Recipes>(recipes);
+        _availableRecipes = new List<Recipe>(recipes);
         
         // Build ingredient units lookup
         _ingredientUnits = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -217,26 +218,35 @@ public class OrdersViewModel : ViewModelBase
         }
     }
 
-    private Recipes? CreateRandomOrder()
+    private Recipe? CreateRandomOrder()
     {
         if (_availableRecipes.Count == 0)
             return null;
 
         var selectedRecipe = _availableRecipes[_random.Next(_availableRecipes.Count)];
 
-        var recipe = new Recipes
+        var recipe = new Recipe
         {
             Name = selectedRecipe.Name,
             Difficulty = selectedRecipe.Difficulty,
             SalePrice = selectedRecipe.SalePrice,
-            RequiredIngredients = new List<RequiredIngredients>(
-                selectedRecipe.RequiredIngredients.Select(ing => new RequiredIngredients
+            RequiredIngredients = selectedRecipe.RequiredIngredients
+                .Select(ing => new RequiredIngredient
                 {
                     Name = ing.Name,
                     Quantity = ing.Quantity,
                     Unit = _ingredientUnits.TryGetValue(ing.Name, out var unit) ? unit : ""
-                })),
-            Steps = new List<Steps>(selectedRecipe.Steps)
+                })
+                .ToList(),
+
+            Steps = selectedRecipe.Steps
+                .Select(s => new Step
+                {
+                    Name = s.Name,
+                    Duration = s.Duration,
+                    StationType = s.StationType
+                })
+                .ToList()
         };
 
         return recipe;

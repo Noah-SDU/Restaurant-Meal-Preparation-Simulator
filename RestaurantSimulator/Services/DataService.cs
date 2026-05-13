@@ -5,11 +5,16 @@ using RestaurantSimulator.Models;
 
 namespace RestaurantSimulator.Services
 {
-    public class DataService
+    public interface IRestaurantDataService
     {
-        private readonly string _filePath = "Assets/Recipes.json";
+        RestaurantData ReadRestaurantData();
+    }
+    
+    public class DataService : IRestaurantDataService
+    {
+        private readonly string _filePath;
 
-        public DataService(string filePath)
+        public DataService(string filePath = "Assets/RestaurantData.json")
         {
             _filePath = filePath;
         }

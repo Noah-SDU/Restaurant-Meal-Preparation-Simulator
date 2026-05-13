@@ -11,12 +11,13 @@ public partial class GameViewModel : ViewModelBase, IDisposable
 {
     private readonly CommandService _commandService;
     private readonly INavigationService? _navigationService;
+    private readonly IRestaurantDataService _dataService;
     private string _commandInput = string.Empty;
     private string _consoleOutput = "> Welcome to the Restaurant Meal Preparation Simulator!\n> Type 'help' for available commands.\n";
     private IngredientsViewModel _ingredientsViewModel;
     private StationsViewModel _stationsViewModel;
     private MoneyViewModel _moneyViewModel;
-    private OrdersViewModel _ordersViewModel;
+    private OrdersViewModel? _ordersViewModel;
 
     public string CommandInput
     {
@@ -48,7 +49,7 @@ public partial class GameViewModel : ViewModelBase, IDisposable
         set => SetProperty(ref _moneyViewModel, value);
     }
 
-    public OrdersViewModel OrdersViewModel
+    public OrdersViewModel? OrdersViewModel
     {
         get => _ordersViewModel;
         set => SetProperty(ref _ordersViewModel, value);
@@ -57,9 +58,10 @@ public partial class GameViewModel : ViewModelBase, IDisposable
     public ICommand ExecuteCommandCommand { get; }
     public ICommand ReturnToMenuCommand { get; }
 
-    public GameViewModel(INavigationService? navigationService = null)
+    public GameViewModel(INavigationService? navigationService = null, IRestaurantDataService? dataService = null)
     {
         _navigationService = navigationService;
+        _dataService = dataService ?? new DataService("Assets/Recipes.json");
         var data = LoadRestaurantData();
         _ingredientsViewModel = new IngredientsViewModel(data.Ingredients);
         _moneyViewModel = new MoneyViewModel();
@@ -83,17 +85,16 @@ public partial class GameViewModel : ViewModelBase, IDisposable
     {
         try
         {
-            var dataService = new DataService("Assets/Recipes.json");
-            return dataService.ReadRestaurantData();
+            return _dataService.ReadRestaurantData(); 
         }
         catch (Exception ex)
         {
             _consoleOutput += $"> Failed to load model data: {ex.Message}\n";
             return new RestaurantData
             {
-                Ingredients = new System.Collections.Generic.List<Ingredients>(),
-                Stations = new System.Collections.Generic.List<Stations>(),
-                Recipes = new System.Collections.Generic.List<Recipes>()
+                Ingredients = new System.Collections.Generic.List<IngredientDefinition>(), 
+                Stations = new System.Collections.Generic.List<Station>(),
+                Recipes = new System.Collections.Generic.List<Recipe>()
             };
         }
     }
@@ -110,7 +111,7 @@ public partial class GameViewModel : ViewModelBase, IDisposable
         var result = _commandService.ExecuteCommand(CommandInput);
 
         // Handle clear console command
-        if (result == "CLEAR_CONSOLE")
+        if (result == CommandService.ClearConsoleSignal)
         {
             ConsoleOutput = string.Empty;
         }

@@ -1,9 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RestaurantSimulator.ViewModels;
 
 namespace RestaurantSimulator.Services;
+
+public interface IIngredientActions
+{
+    bool TryBuyIngredient(string name, double amount, out string message, out decimal totalCost);
+    bool TryAddIngredient(string name, double amount, out string message);
+}
+
+public interface IMoneyActions
+{
+    decimal Money { get; }
+    void RecordExpense(decimal amount);
+}
+
+public interface IOrderActions
+{
+    bool AreAllIngredientsComplete();
+    bool TryAddIngredient(string ingredientName, double amount, out string message);
+}
+
+public interface IStationActions
+{
+    bool TryStartStep(string stepName, string stationName, out string message);
+}
 
 public interface ICommandHandler
 {
@@ -14,29 +36,31 @@ public interface ICommandHandler
 
 public class CommandService
 {
+    public const string ClearConsoleSignal = "CLEAR_CONSOLE";
+    
     private readonly Dictionary<string, ICommandHandler> _commands = new();
 
-    private readonly IngredientsViewModel? _ingredientsViewModel;
-    private readonly StationsViewModel? _stationsViewModel;
-    private readonly MoneyViewModel? _moneyViewModel;
-    private readonly OrdersViewModel? _ordersViewModel;
+    private readonly IIngredientActions? _ingredients;
+    private readonly IStationActions? _stations;
+    private readonly IMoneyActions? _money;
+    private readonly IOrderActions? _orders;
 
     public CommandService(
-        IngredientsViewModel? ingredientsViewModel = null,
-        StationsViewModel? stationsViewModel = null,
-        MoneyViewModel? moneyViewModel = null,
-        OrdersViewModel? ordersViewModel = null)
+        IIngredientActions? ingredients = null,
+        IStationActions? stations = null,
+        IMoneyActions? money = null,
+        IOrderActions? orders = null)
     {
-        _ingredientsViewModel = ingredientsViewModel;
-        _stationsViewModel = stationsViewModel;
-        _moneyViewModel = moneyViewModel;
-        _ordersViewModel = ordersViewModel;
+        _ingredients = ingredients;
+        _stations = stations;
+        _money = money;
+        _orders = orders;
         RegisterDefaultCommands();
     }
 
     public void RegisterCommand(ICommandHandler handler)
     {
-        _commands[handler.Name.ToLower()] = handler;
+        _commands[handler.Name.ToLowerInvariant()] = handler;
     }
 
     public string ExecuteCommand(string input)
@@ -44,17 +68,21 @@ public class CommandService
         if (string.IsNullOrWhiteSpace(input))
             return string.Empty;
 
-        var parts = input.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var commandName = parts[0].ToLower();
+        var parts = Tokenize(input);
+        if (parts.Length == 0)
+        {
+            return string.Empty;
+        }
+        var commandName = parts[0].ToLowerInvariant();
         var args = parts.Skip(1).ToArray();
 
         // Check if this is a step assignment command (quoted step name followed by "at")
-        if (parts.Length >= 3 && parts[0].StartsWith("\"") && _stationsViewModel != null)
+        /*if (parts.Length >= 3 && parts[0].StartsWith("\"") && _stationsActions != null)
         {
             try
             {
                 // Check if all ingredients are complete before allowing step assignment
-                if (_ordersViewModel != null && !_ordersViewModel.AreAllIngredientsComplete())
+                if (_ordersActions != null && !_ordersActions.AreAllIngredientsComplete())
                     return "Cannot assign steps yet. All ingredients must be added to the recipe first.";
 
                 // Find the closing quote
@@ -73,7 +101,7 @@ public class CommandService
                         
                         if (!string.IsNullOrWhiteSpace(stationName))
                         {
-                            if (_stationsViewModel.TryStartStep(stepName, stationName, out var message))
+                            if (_stationsActions.TryStartStep(stepName, stationName, out var message))
                                 return message;
                             return message;
                         }
@@ -84,7 +112,7 @@ public class CommandService
             {
                 return $"Error executing step command: {ex.Message}";
             }
-        }
+        }*/
 
         // Try to execute as a registered command
         if (_commands.TryGetValue(commandName, out var handler))
@@ -101,15 +129,52 @@ public class CommandService
 
         return $"Unknown command: '{commandName}'. Type 'help' for available commands.";
     }
+    
+    private static string[] Tokenize(string input)
+    {
+        var tokens = new List<string>();
+        var current = "";
+        var inQuotes = false;
+
+        foreach (var ch in input.Trim())
+        {
+            if (ch == '"')
+            {
+                inQuotes = !inQuotes;
+                continue;
+            }
+
+            if (!inQuotes && char.IsWhiteSpace(ch))
+            {
+                if (current.Length > 0)
+                {
+                    tokens.Add(current);
+                    current = "";
+                }
+                continue;
+            }
+
+            current += ch;
+        }
+
+        if (current.Length > 0)
+            tokens.Add(current);
+
+        return tokens.ToArray();
+    }
+
 
     private void RegisterDefaultCommands()
     {
         RegisterCommand(new HelpCommand(_commands));
         RegisterCommand(new ClearCommand());
-        if (_ingredientsViewModel != null && _moneyViewModel != null)
-            RegisterCommand(new BuyCommand(_ingredientsViewModel, _moneyViewModel));
-        if (_ingredientsViewModel != null && _ordersViewModel != null)
-            RegisterCommand(new AddCommand(_ingredientsViewModel, _ordersViewModel));
+        
+        if (_ingredients != null && _money != null)
+            RegisterCommand(new BuyCommand(_ingredients, _money));
+        if (_ingredients != null && _orders != null)
+            RegisterCommand(new AddCommand(_ingredients, _orders));
+        if (_stations != null && _orders != null)
+            RegisterCommand(new AssignStepCommand(_stations, _orders));
     }
 }
 
@@ -132,7 +197,7 @@ public class HelpCommand : ICommandHandler
         {
             helpText += $"  {cmd.Name,-15} - {cmd.Description}\n";
         }
-        helpText += "  step            - \"<step name>\" at <station name>\n";
+        helpText += "  step            - step \"<step name>\" at <station name>\n";
         helpText += "\n[IMPORTANT] All ingredients must be added to the recipe BEFORE steps can be assigned to stations.\n";
         return helpText;
     }
@@ -145,22 +210,22 @@ public class ClearCommand : ICommandHandler
 
     public string Execute(string[] args)
     {
-        return "CLEAR_CONSOLE"; // Special return value to signal clearing
+        return CommandService.ClearConsoleSignal;
     }
 }
 
 public class BuyCommand : ICommandHandler
 {
-    private readonly IngredientsViewModel _ingredientsViewModel;
-    private readonly MoneyViewModel _moneyViewModel;
+    private readonly IIngredientActions _ingredients;
+    private readonly IMoneyActions _money;
 
     public string Name => "buy";
     public string Description => "buy <ingredient name> <amount>";
 
-    public BuyCommand(IngredientsViewModel ingredientsViewModel, MoneyViewModel moneyViewModel)
+    public BuyCommand(IIngredientActions ingredients, IMoneyActions money)
     {
-        _ingredientsViewModel = ingredientsViewModel;
-        _moneyViewModel = moneyViewModel;
+        _ingredients = ingredients;
+        _money = money;
     }
 
     public string Execute(string[] args)
@@ -174,26 +239,26 @@ public class BuyCommand : ICommandHandler
         if (!double.TryParse(amountToken, out var amount) || amount <= 0)
             return "Invalid amount. Must be a positive number.";
 
-        if (!_ingredientsViewModel.TryBuyIngredient(ingredientName, amount, out var message, out var totalCost, out _))
+        if (!_ingredients.TryBuyIngredient(ingredientName, amount, out var message, out var totalCost))
             return message;
 
-        _moneyViewModel.RecordExpense(totalCost);
-        return $"{message}. Money left: {_moneyViewModel.Money:C2}";
+        _money.RecordExpense(totalCost);
+        return $"{message}. Money left: {_money.Money:C2}";
     }
 }
 
 public class AddCommand : ICommandHandler
 {
-    private readonly IngredientsViewModel _ingredientsViewModel;
-    private readonly OrdersViewModel _ordersViewModel;
+    private readonly IIngredientActions _ingredients;
+    private readonly IOrderActions _orders;
 
     public string Name => "add";
     public string Description => "add <ingredient name> <amount>";
 
-    public AddCommand(IngredientsViewModel ingredientsViewModel, OrdersViewModel ordersViewModel)
+    public AddCommand(IIngredientActions ingredients, IOrderActions orders)
     {
-        _ingredientsViewModel = ingredientsViewModel;
-        _ordersViewModel = ordersViewModel;
+        _ingredients = ingredients;
+        _orders = orders;
     }
 
     public string Execute(string[] args)
@@ -207,13 +272,48 @@ public class AddCommand : ICommandHandler
         if (!double.TryParse(amountToken, out var amount) || amount <= 0)
             return "Invalid amount. Must be a positive number.";
 
-        if (!_ingredientsViewModel.TryAddIngredient(ingredientName, amount, out var message, out var unit))
+        if (!_ingredients.TryAddIngredient(ingredientName, amount, out var message))
             return message;
 
-        // Now add to the recipe progress
-        if (_ordersViewModel.TryAddIngredient(ingredientName, amount, out var recipeMessage))
+        if (_orders.TryAddIngredient(ingredientName, amount, out var recipeMessage))
             return recipeMessage;
 
         return message;
+    }
+}
+
+public class AssignStepCommand : ICommandHandler
+{
+    private readonly IStationActions _stations;
+    private readonly IOrderActions _orders;
+
+    public string Name => "step";
+    public string Description => "step \"<step name>\" at <station name>";
+
+    public AssignStepCommand(IStationActions stations, IOrderActions orders)
+    {
+        _stations = stations;
+        _orders = orders;
+    }
+
+    public string Execute(string[] args)
+    {
+        if (args.Length < 3)
+            return "Usage: step \"<step name>\" at <station name>";
+
+        if (!_orders.AreAllIngredientsComplete())
+            return "Cannot assign steps yet. All ingredients must be added to the recipe first.";
+
+        var atIndex = Array.FindIndex(args, a => a.Equals("at", StringComparison.OrdinalIgnoreCase));
+        if (atIndex <= 0 || atIndex == args.Length - 1)
+            return "Usage: step \"<step name>\" at <station name>";
+
+        var stepName = string.Join(" ", args.Take(atIndex));
+        var stationName = string.Join(" ", args.Skip(atIndex + 1));
+
+        if (string.IsNullOrWhiteSpace(stepName) || string.IsNullOrWhiteSpace(stationName))
+            return "Usage: step \"<step name>\" at <station name>";
+
+        return _stations.TryStartStep(stepName, stationName, out var message) ? message : message;
     }
 }

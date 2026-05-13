@@ -1,6 +1,9 @@
-namespace RestaurantSimulator.ViewModels;
+using RestaurantSimulator.Services;
 
-public class MoneyViewModel : ViewModelBase
+namespace RestaurantSimulator.ViewModels;
+using RestaurantSimulator.Services;
+
+public class MoneyViewModel : ViewModelBase, IMoneyActions
 {
     private decimal _money;
     private decimal _expenses;

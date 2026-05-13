@@ -50,7 +50,7 @@
                 <StackPanel Grid.Column="1" Spacing="8">
                     <ContentControl Content="{Binding CurrentOrder}">
                         <ContentControl.ContentTemplate>
-                            <DataTemplate DataType="m:Recipes">
+                            <DataTemplate DataType="m:Recipe">
                                 <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Padding="8">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="13"/>

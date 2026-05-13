@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
+using System;
 using System.Linq;
 using Avalonia.Markup.Xaml;
 using RestaurantSimulator.ViewModels;
@@ -21,9 +22,25 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var mainVm = new MainWindowViewModel();
-            var navigation = new Services.NavigationService(mainVm);
+            
+            // Create factory first, then navigation
+            Services.NavigationService? navigation = null;
+            Func<Type, ViewModelBase> factory = type => 
+            {
+                // Handle special cases where VMs need the navigation service
+                if (type == typeof(MainMenuViewModel))
+                    return new MainMenuViewModel(navigation!);
+                if (type == typeof(GameViewModel))
+                    return new GameViewModel(navigation!);
+                if (type == typeof(OptionsViewModel))
+                    return new OptionsViewModel(navigation!);
+                // Default factory for other types
+                return (ViewModelBase)Activator.CreateInstance(type)!;
+            };
+            
+            navigation = new Services.NavigationService(mainVm, factory);
 
-            // Navigate to the initial page using the generic factory method
+            // Navigate to the initial page
             navigation.Navigate<MainMenuViewModel>();
 
             var mainWindow = new MainWindow()
