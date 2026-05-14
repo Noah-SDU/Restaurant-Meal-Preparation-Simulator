@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using RestaurantSimulator.Models;
+using RestaurantSimulator.Services;
 
 namespace RestaurantSimulator.ViewModels;
 
-public class StationsViewModel : ViewModelBase
+public class StationsViewModel : ViewModelBase, IStationActions
 {
     private ObservableCollection<StationDisplayViewModel> _stations = new();
     private OrdersViewModel? _ordersViewModel;
@@ -21,7 +22,7 @@ public class StationsViewModel : ViewModelBase
         set => SetProperty(ref _stations, value);
     }
 
-    public StationsViewModel(IEnumerable<Stations> stations, OrdersViewModel? ordersViewModel = null)
+    public StationsViewModel(IEnumerable<Station> stations, OrdersViewModel? ordersViewModel = null)
     {
         _ordersViewModel = ordersViewModel;
         Stations = new ObservableCollection<StationDisplayViewModel>(

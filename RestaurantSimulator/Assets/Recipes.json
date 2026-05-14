@@ -49,11 +49,11 @@
         { "name": "Flour", "quantity": 250 }
       ],
       "steps": [
-        { "step": "Preheat the oven", "duration": 5, "stationType": "Oven" },
-        { "step": "Prepare the dough", "duration": 15, "stationType": "General" },
-        { "step": "Spread tomato sauce", "duration": 5, "stationType": "General" },
-        { "step": "Add cheese and basil", "duration": 3, "stationType": "General" },
-        { "step": "Bake the pizza", "duration": 15, "stationType": "Oven" }
+        { "name": "Preheat the oven", "duration": 5, "stationType": "Oven" },
+        { "name": "Prepare the dough", "duration": 15, "stationType": "General" },
+        { "name": "Spread tomato sauce", "duration": 5, "stationType": "General" },
+        { "name": "Add cheese and basil", "duration": 3, "stationType": "General" },
+        { "name": "Bake the pizza", "duration": 15, "stationType": "Oven" }
       ]
     },
     {
@@ -67,10 +67,10 @@
         { "name": "Olive Oil", "quantity": 30 }
       ],
       "steps": [
-        { "step": "Boil water", "duration": 5, "stationType": "Stove" },
-        { "step": "Cook pasta", "duration": 10, "stationType": "Stove" },
-        { "step": "Prepare tomato sauce", "duration": 8, "stationType": "General" },
-        { "step": "Mix pasta and sauce", "duration": 2, "stationType": "Stove" }
+        { "name": "Boil water", "duration": 5, "stationType": "Stove" },
+        { "name": "Cook pasta", "duration": 10, "stationType": "Stove" },
+        { "name": "Prepare tomato sauce", "duration": 8, "stationType": "General" },
+        { "name": "Mix pasta and sauce", "duration": 2, "stationType": "Stove" }
       ]
     },
     {
@@ -83,11 +83,11 @@
         { "name": "Butter", "quantity": 50 }
       ],
       "steps": [
-        { "step": "Marinate the chicken", "duration": 30, "stationType": "General" },
-        { "step": "Preheat the grill", "duration": 10, "stationType": "Grill" },
-        { "step": "Grill the chicken", "duration": 20, "stationType": "Grill" },
-        { "step": "Prepare garlic butter sauce", "duration": 5, "stationType": "General" },
-        { "step": "Brush garlic butter on chicken", "duration": 2, "stationType": "General" }
+        { "name": "Marinate the chicken", "duration": 30, "stationType": "General" },
+        { "name": "Preheat the grill", "duration": 10, "stationType": "Grill" },
+        { "name": "Grill the chicken", "duration": 20, "stationType": "Grill" },
+        { "name": "Prepare garlic butter sauce", "duration": 5, "stationType": "General" },
+        { "name": "Brush garlic butter on chicken", "duration": 2, "stationType": "General" }
       ]
     },
     {
@@ -102,11 +102,11 @@
         { "name": "Sour Cream", "quantity": 50 }
       ],
       "steps": [
-        { "step": "Slice beef into strips", "duration": 10, "stationType": "Cutting" },
-        { "step": "Saute onions and mushrooms", "duration": 5, "stationType": "Stove" },
-        { "step": "Add beef and sear", "duration": 10, "stationType": "Stove" },
-        { "step": "Prepare sauce with sour cream", "duration": 5, "stationType": "General" },
-        { "step": "Simmer for flavors to develop", "duration": 10, "stationType": "Stove" }
+        { "name": "Slice beef into strips", "duration": 10, "stationType": "Cutting" },
+        { "name": "Saute onions and mushrooms", "duration": 5, "stationType": "Stove" },
+        { "name": "Add beef and sear", "duration": 10, "stationType": "Stove" },
+        { "name": "Prepare sauce with sour cream", "duration": 5, "stationType": "General" },
+        { "name": "Simmer for flavors to develop", "duration": 10, "stationType": "Stove" }
       ]
     },
     {
@@ -120,11 +120,11 @@
         { "name": "Butter", "quantity": 20 }
       ],
       "steps": [
-        { "step": "Mix dry ingredients", "duration": 5, "stationType": "General" },
-        { "step": "Add milk and eggs", "duration": 3, "stationType": "General" },
-        { "step": "Whisk until smooth", "duration": 3, "stationType": "General" },
-        { "step": "Cook pancakes on frying pan", "duration": 10, "stationType": "Stove" },
-        { "step": "Serve with toppings", "duration": 2, "stationType": "General" }
+        { "name": "Mix dry ingredients", "duration": 5, "stationType": "General" },
+        { "name": "Add milk and eggs", "duration": 3, "stationType": "General" },
+        { "name": "Whisk until smooth", "duration": 3, "stationType": "General" },
+        { "name": "Cook pancakes on frying pan", "duration": 10, "stationType": "Stove" },
+        { "name": "Serve with toppings", "duration": 2, "stationType": "General" }
       ]
     },
     {
@@ -141,12 +141,12 @@
         { "name": "Parsley", "quantity": 5 }
       ],
       "steps": [
-        { "step": "Prepare seafood and chop vegetables", "duration": 10, "stationType": "Cutting" },
-        { "step": "Sauté onions, garlic, and bell peppers", "duration": 5, "stationType": "Stove" },
-        { "step": "Add rice and spices", "duration": 5, "stationType": "General" },
-        { "step": "Pour in broth and simmer", "duration": 20, "stationType": "Stove" },
-        { "step": "Add seafood and cook until done", "duration": 10, "stationType": "Stove" },
-        { "step": "Garnish with lemon and parsley", "duration": 2, "stationType": "General" }
+        { "name": "Prepare seafood and chop vegetables", "duration": 10, "stationType": "Cutting" },
+        { "name": "Sauté onions, garlic, and bell peppers", "duration": 5, "stationType": "Stove" },
+        { "name": "Add rice and spices", "duration": 5, "stationType": "General" },
+        { "name": "Pour in broth and simmer", "duration": 20, "stationType": "Stove" },
+        { "name": "Add seafood and cook until done", "duration": 10, "stationType": "Stove" },
+        { "name": "Garnish with lemon and parsley", "duration": 2, "stationType": "General" }
       ]
     },
     {
@@ -159,11 +159,11 @@
         { "name": "Soy Sauce", "quantity": 30 }
       ],
       "steps": [
-        { "step": "Chop assorted vegetables", "duration": 5, "stationType": "Cutting" },
-        { "step": "Heat wok and add oil", "duration": 2, "stationType": "Stove" },
-        { "step": "Stir-fry vegetables over high heat", "duration": 7, "stationType": "Stove" },
-        { "step": "Add soy sauce and seasonings", "duration": 3, "stationType": "General" },
-        { "step": "Toss and serve immediately", "duration": 1, "stationType": "General" }
+        { "name": "Chop assorted vegetables", "duration": 5, "stationType": "Cutting" },
+        { "name": "Heat wok and add oil", "duration": 2, "stationType": "Stove" },
+        { "name": "Stir-fry vegetables over high heat", "duration": 7, "stationType": "Stove" },
+        { "name": "Add soy sauce and seasonings", "duration": 3, "stationType": "General" },
+        { "name": "Toss and serve immediately", "duration": 1, "stationType": "General" }
       ]
     },
     {
@@ -179,12 +179,12 @@
         { "name": "Cilantro", "quantity": 10 }
       ],
       "steps": [
-        { "step": "Marinate lamb with spices", "duration": 20, "stationType": "General" },
-        { "step": "Brown lamb in a pot", "duration": 10, "stationType": "Stove" },
-        { "step": "Grind spices and sauté onions", "duration": 5, "stationType": "Stove" },
-        { "step": "Add lamb, tomatoes, and coconut milk", "duration": 5, "stationType": "General" },
-        { "step": "Simmer until lamb is tender", "duration": 25, "stationType": "Stove" },
-        { "step": "Finish with fresh cilantro", "duration": 2, "stationType": "General" }
+        { "name": "Marinate lamb with spices", "duration": 20, "stationType": "General" },
+        { "name": "Brown lamb in a pot", "duration": 10, "stationType": "Stove" },
+        { "name": "Grind spices and sauté onions", "duration": 5, "stationType": "Stove" },
+        { "name": "Add lamb, tomatoes, and coconut milk", "duration": 5, "stationType": "General" },
+        { "name": "Simmer until lamb is tender", "duration": 25, "stationType": "Stove" },
+        { "name": "Finish with fresh cilantro", "duration": 2, "stationType": "General" }
       ]
     }
   ]

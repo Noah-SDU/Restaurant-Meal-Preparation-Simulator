@@ -5,23 +5,178 @@
              x:DataType="vm:OptionsViewModel">
 
     <Border Background="#5C3A4B" BorderBrush="#9B7888" BorderThickness="0">
-        <StackPanel Spacing="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40">
-            <TextBlock Text="Options" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" TextAlignment="Center"/>
-            
-            <TextBlock Text="(Options coming soon)" FontSize="14" Foreground="#D4B5C0" TextAlignment="Center"/>
-            
-            <Button Content="Return to Main Menu" 
-                    Command="{Binding ReturnToMenuCommand}"
-                    Background="#8B5A8C" 
-                    Foreground="#FFFFFF" 
-                    FontSize="12" 
-                    Padding="15,10" 
-                    BorderThickness="1" 
-                    BorderBrush="#9B7888"
-                    CornerRadius="3"
-                    MaxWidth="200"
-                    HorizontalAlignment="Center"/>
+    <StackPanel Spacing="16"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="40"
+                Width="420">
+
+      <TextBlock Text="Options"
+                 FontSize="28"
+                 FontWeight="Bold"
+                 Foreground="#FFFFFF"
+                 TextAlignment="Center"/>
+
+      <!-- Global time meter -->
+      <TextBlock Text="Time (global multiplier)"
+                 Foreground="#D4B5C0"
+                 FontSize="12"/>
+
+      <Slider Minimum="0.5"
+              Maximum="2.0"
+              TickFrequency="0.25"
+              IsSnapToTickEnabled="True"
+              Value="{Binding Settings.TimeMultiplier, Mode=TwoWay}"/>
+
+      <TextBlock Text="{Binding Settings.TimeMultiplier, StringFormat='Current: {0:0.00}x'}"
+                 Foreground="#FFFFFF"
+                 FontSize="12"/>
+
+      <!-- Difficulty buttons -->
+      <TextBlock Text="Difficulty step time presets"
+                 Foreground="#D4B5C0"
+                 FontSize="12"
+                 Margin="0,10,0,0"/>
+
+      <!-- EASY -->
+      <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="3" Padding="10">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Easy recipes" Foreground="#FFFFFF" FontWeight="Bold"/>
+
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Normal"
+                    Command="{Binding SetEasyMultiplierCommand}"
+                    CommandParameter="1.0"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+
+            <Button Content="Long"
+                    Command="{Binding SetEasyMultiplierCommand}"
+                    CommandParameter="1.25"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+
+            <Button Content="Very long"
+                    Command="{Binding SetEasyMultiplierCommand}"
+                    CommandParameter="1.5"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+          </StackPanel>
+
+          <TextBlock Text="{Binding Settings.EasyMultiplier, StringFormat='Easy multiplier: {0:0.00}x'}"
+                     Foreground="#D4B5C0" FontSize="11"/>
         </StackPanel>
-    </Border>
+      </Border>
+
+      <!-- MEDIUM -->
+      <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="3" Padding="10">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Medium recipes" Foreground="#FFFFFF" FontWeight="Bold"/>
+
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Normal"
+                    Command="{Binding SetMediumMultiplierCommand}"
+                    CommandParameter="1.0"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+            
+            <Button Content="Long"
+                    Command="{Binding SetMediumMultiplierCommand}"
+                    CommandParameter="1.25"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+            
+            <Button Content="Very long"
+                    Command="{Binding SetMediumMultiplierCommand}"
+                    CommandParameter="1.5"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+          </StackPanel>
+
+          <TextBlock Text="{Binding Settings.MediumMultiplier, StringFormat='Medium multiplier: {0:0.00}x'}"
+                     Foreground="#D4B5C0" FontSize="11"/>
+        </StackPanel>
+      </Border>
+
+      <!-- HARD -->
+      <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="3" Padding="10">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Hard recipes" Foreground="#FFFFFF" FontWeight="Bold"/>
+
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Normal"
+                    Command="{Binding SetHardMultiplierCommand}"
+                    CommandParameter="1.0"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+            
+            <Button Content="Long"
+                    Command="{Binding SetHardMultiplierCommand}"
+                    CommandParameter="1.25"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+            
+            <Button Content="Very long"
+                    Command="{Binding SetHardMultiplierCommand}"
+                    CommandParameter="1.5"
+                    Background="#8B5A8C"
+                    Foreground="#FFFFFF"
+                    FontSize="11"
+                    Padding="8,4"
+                    BorderThickness="1"
+                    BorderBrush="#9B7888"/>
+          </StackPanel>
+
+          <TextBlock Text="{Binding Settings.HardMultiplier, StringFormat='Hard multiplier: {0:0.00}x'}"
+                     Foreground="#D4B5C0" FontSize="11"/>
+        </StackPanel>
+      </Border>
+
+      <Button Content="Return to Main Menu"
+              Command="{Binding ReturnToMenuCommand}"
+              Background="#8B5A8C"
+              Foreground="#FFFFFF"
+              FontSize="12"
+              Padding="15,10"
+              BorderThickness="1"
+              BorderBrush="#9B7888"
+              CornerRadius="3"
+              MaxWidth="220"
+              HorizontalAlignment="Center"
+              Margin="0,6,0,0"/>
+    </StackPanel>
+  </Border>
 
 </UserControl>

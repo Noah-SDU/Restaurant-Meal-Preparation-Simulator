@@ -12,7 +12,7 @@
                           HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding Ingredients}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="m:Ingredients">
+                        <DataTemplate DataType="m:IngredientDefinition">
                             <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" Margin="0,0,0,8" Padding="10" CornerRadius="3">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="12"/>
@@ -21,7 +21,6 @@
                                         <Run Text="{Binding InitialStock}"/>
                                         <Run Text="{Binding Unit}"/>
                                     </TextBlock>
-                                        <TextBlock Text="{Binding Status}" Foreground="#C8A9B6" FontSize="10" Margin="0,2,0,0"/>
                                     <TextBlock Text="{Binding Cost, StringFormat='Cost: {0:C2}'}" Foreground="#F8F3F5" FontSize="11" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </Border>

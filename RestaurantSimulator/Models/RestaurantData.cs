@@ -4,8 +4,8 @@ namespace RestaurantSimulator.Models
 {
     public class RestaurantData
     {
-        public required List<Stations> Stations { get; set; }
-        public required List<Ingredients> Ingredients { get; set; }
-        public required List<Recipes> Recipes { get; set; }
+        public required List<Station> Stations { get; set; }
+        public required List<IngredientDefinition> Ingredients { get; set; }
+        public required List<Recipe> Recipes { get; set; }
     }
 }

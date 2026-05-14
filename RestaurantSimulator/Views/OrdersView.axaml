@@ -19,7 +19,7 @@
             </Grid>
             
             <Border Grid.Row="1" Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Margin="0,0,0,6" Padding="5,1">
-                <ProgressBar Value="{Binding RemainingSeconds}" Maximum="180" Background="#7A5A69" Foreground="#FFB6C1" Height="5"/>
+                <ProgressBar Value="{Binding RemainingSeconds}" Maximum="{Binding OrderIntervalSeconds}" Background="#7A5A69" Foreground="#FFB6C1" Height="5" />
             </Border>
             
             <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="8">
@@ -50,7 +50,7 @@
                 <StackPanel Grid.Column="1" Spacing="8">
                     <ContentControl Content="{Binding CurrentOrder}">
                         <ContentControl.ContentTemplate>
-                            <DataTemplate DataType="m:Recipes">
+                            <DataTemplate DataType="m:Recipe">
                                 <Border Background="#6E4A5D" BorderBrush="#9B7888" BorderThickness="1" CornerRadius="2" Padding="8">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#FFFFFF" FontSize="13"/>
