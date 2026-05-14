@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "Avalonia/12.0.1": {
@@ -1604,28 +1604,37 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nojus\\.nuget\\packages\\": {}
+    "C:\\Users\\avram\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
+      "projectUniqueName": "C:\\Users\\avram\\RiderProjects\\Library\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
       "projectName": "RestaurantSimulator",
-      "projectPath": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
-      "packagesPath": "C:\\Users\\nojus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nojus\\OneDrive\\Documents\\UniProjects\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\obj\\",
+      "projectPath": "C:\\Users\\avram\\RiderProjects\\Library\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\RestaurantSimulator.csproj",
+      "packagesPath": "C:\\Users\\avram\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\avram\\RiderProjects\\Library\\Restaurant-Meal-Preparation-Simulator\\RestaurantSimulator\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\nojus\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\avram\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {}
         }
@@ -1640,10 +1649,11 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Avalonia": {
@@ -1687,7 +1697,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
