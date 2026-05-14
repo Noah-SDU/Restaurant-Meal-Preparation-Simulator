@@ -14,7 +14,7 @@ namespace RestaurantSimulator.Services
     {
         private readonly string _filePath;
 
-        public DataService(string filePath = "Assets/RestaurantData.json")
+        public DataService(string filePath = "Assets/Recipes.json")
         {
             _filePath = filePath;
         }

@@ -12,6 +12,7 @@ public partial class GameViewModel : ViewModelBase, IDisposable
     private readonly CommandService _commandService;
     private readonly INavigationService? _navigationService;
     private readonly IRestaurantDataService _dataService;
+    private readonly IGameSettings _settings;
     private string _commandInput = string.Empty;
     private string _consoleOutput = "> Welcome to the Restaurant Meal Preparation Simulator!\n> Type 'help' for available commands.\n";
     private IngredientsViewModel _ingredientsViewModel;
@@ -58,14 +59,15 @@ public partial class GameViewModel : ViewModelBase, IDisposable
     public ICommand ExecuteCommandCommand { get; }
     public ICommand ReturnToMenuCommand { get; }
 
-    public GameViewModel(INavigationService? navigationService = null, IRestaurantDataService? dataService = null)
+    public GameViewModel(INavigationService? navigationService = null, IRestaurantDataService? dataService = null, IGameSettings? settings = null)
     {
         _navigationService = navigationService;
         _dataService = dataService ?? new DataService("Assets/Recipes.json");
+        _settings = settings ?? new GameSettings();
         var data = LoadRestaurantData();
         _ingredientsViewModel = new IngredientsViewModel(data.Ingredients);
         _moneyViewModel = new MoneyViewModel();
-        _ordersViewModel = new OrdersViewModel(data.Recipes, data.Ingredients, _moneyViewModel);
+        _ordersViewModel = new OrdersViewModel(data.Recipes, data.Ingredients, _moneyViewModel, _settings);
         _stationsViewModel = new StationsViewModel(data.Stations, _ordersViewModel);
         _commandService = new CommandService(_ingredientsViewModel, _stationsViewModel, _moneyViewModel, _ordersViewModel);
         ExecuteCommandCommand = new RelayCommand(_ => ExecuteCommand());

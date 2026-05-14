@@ -35,6 +35,7 @@ public class IngredientProgressViewModel : ViewModelBase
 public class OrderStepViewModel : ViewModelBase
 {
     private readonly Step _step;
+    private readonly double _multiplier;
     private OrderStepStatus _status = OrderStepStatus.Pending;
     private string _stationName = string.Empty;
     private int _remainingSeconds;
@@ -45,7 +46,7 @@ public class OrderStepViewModel : ViewModelBase
 
     public string StationType => _step.StationType;
 
-    public int Duration => _step.Duration / 2;
+    public int Duration => (int)Math.Ceiling((_step.Duration / 2.0) * _multiplier);
 
     public OrderStepStatus Status
     {
@@ -78,9 +79,10 @@ public class OrderStepViewModel : ViewModelBase
 
     public string BackgroundColor => IsCompleted ? "#FF69B4" : "#5B3B4B";
 
-    public OrderStepViewModel(Step step)
+    public OrderStepViewModel(Step step, double multiplier)
     {
         _step = step;
+        _multiplier = multiplier <= 0 ? 1.0 : multiplier;
     }
 
     public void Start(string stationName)
@@ -107,13 +109,27 @@ public class OrdersViewModel : ViewModelBase, IOrderActions, IDisposable
     private readonly List<Recipe> _availableRecipes;
     private readonly Dictionary<string, string> _ingredientUnits;
     private readonly MoneyViewModel? _moneyViewModel;
+    private readonly IGameSettings _settings;
     private Recipe? _currentOrder;
     private int _remainingSeconds = 0;
     private CancellationTokenSource? _cancellationTokenSource;
     private Random _random = new();
-    private const int OrderIntervalSeconds = 180; // 3 minutes
     private ObservableCollection<OrderStepViewModel> _currentOrderSteps = new();
     private ObservableCollection<IngredientProgressViewModel> _ingredientProgress = new();
+    
+     public int OrderIntervalSeconds
+     {
+         get
+         {
+             var baseInterval = 180 * _settings.TimeMultiplier;
+             if (CurrentOrder != null)
+             {
+                 var difficultyMultiplier = _settings.GetDifficultyMultiplier(CurrentOrder.Difficulty);
+                 baseInterval *= difficultyMultiplier;
+             }
+             return (int)Math.Ceiling(baseInterval);
+         }
+     }
 
     public Recipe? CurrentOrder
     {
@@ -146,9 +162,10 @@ public class OrdersViewModel : ViewModelBase, IOrderActions, IDisposable
         set => SetProperty(ref _ingredientProgress, value);
     }
 
-    public OrdersViewModel(IEnumerable<Recipe> recipes, IEnumerable<IngredientDefinition>? ingredients = null, MoneyViewModel? moneyViewModel = null)
+    public OrdersViewModel(IEnumerable<Recipe> recipes, IEnumerable<IngredientDefinition>? ingredients = null, MoneyViewModel? moneyViewModel = null, IGameSettings? settings = null)
     {
         _moneyViewModel = moneyViewModel;
+        _settings = settings ?? new GameSettings();
         _availableRecipes = new List<Recipe>(recipes);
         
         // Build ingredient units lookup
@@ -259,9 +276,13 @@ public class OrdersViewModel : ViewModelBase, IOrderActions, IDisposable
             CurrentOrderSteps = new ObservableCollection<OrderStepViewModel>();
             return;
         }
+        
+        var multiplier =
+            _settings.TimeMultiplier *
+            _settings.GetDifficultyMultiplier(CurrentOrder.Difficulty);
 
         CurrentOrderSteps = new ObservableCollection<OrderStepViewModel>(
-            CurrentOrder.Steps.Select(step => new OrderStepViewModel(step)));
+            CurrentOrder.Steps.Select(step => new OrderStepViewModel(step, multiplier)));
     }
 
     private void RefreshIngredientProgress()
